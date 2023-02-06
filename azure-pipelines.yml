@@ -61,12 +61,12 @@ steps:
     publishTestResults: true
     projects: '**/*.Tests.csproj'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Create code coverage report'
+- task: ReportGenerator@4
+  displayName: 'Generate Code Coverage Report'
   inputs:
-    command: custom
-    custom: tool
-    arguments: 'run reportgenerator -reports:$(Build.SourcesDirectory)\TestResults\Coverage\coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)\CodeCoverage -reporttypes:HtmlInline_AzurePipelines'
+    format: 'Cobertura'
+    sourceFiles: '$(System.DefaultWorkingDirectory)/TestResults/Coverage/*.xml'
+    targetDir: '$(System.DefaultWorkingDirectory)/CodeCoverage'
 
 - task: PublishCodeCoverageResults@1
   displayName: 'Publish code coverage report'
